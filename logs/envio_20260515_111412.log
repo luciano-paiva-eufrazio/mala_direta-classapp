@@ -1,0 +1,14 @@
+2026-05-15 09:15:32,187 - INFO - === INÍCIO DA MALA DIRETA (CREDENCIAIS ALUNO + RESPONSÁVEL) ===
+2026-05-15 09:15:32,190 - INFO - Carregados 3 registros do CSV alunos.csv
+2026-05-15 09:15:32,251 - INFO - Template convertido para HTML (724 caracteres)
+2026-05-15 09:15:32,251 - INFO - Assunto definido: Portal Educacional - Dados para acesso
+2026-05-15 09:15:32,252 - INFO - Processando [1/3] ID: 11111111 - Aluno Exemplo A
+2026-05-15 09:15:33,145 - INFO - ✅ Enviado para 11111111
+2026-05-15 09:15:33,646 - INFO - Processando [2/3] ID: 22222222 - Aluno Exemplo B
+2026-05-15 09:15:34,528 - INFO - ✅ Enviado para 22222222
+2026-05-15 09:15:35,028 - INFO - Processando [3/3] ID: 33333333 - Aluno Exemplo C
+2026-05-15 09:15:35,892 - INFO - ✅ Enviado para 33333333
+2026-05-15 09:15:36,392 - INFO - === RESUMO ===
+2026-05-15 09:15:36,392 - INFO - Total: 3 | Sucessos: 3 | Falhas: 0
+2026-05-15 09:15:36,393 - INFO - Relatório salvo em relatorio_envio.json
+2026-05-15 09:15:36,393 - INFO - Log completo disponível em: logs/envio_20260515_091532.log
