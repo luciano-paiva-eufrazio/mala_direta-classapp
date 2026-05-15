@@ -1,0 +1,11 @@
+{
+  "data_execucao": "2026-05-14T11:25:05.325343",
+  "assunto": "Portal Educacional - Dados para acesso",
+  "total_sucessos": 2,
+  "total_falhas": 0,
+  "sucessos": [
+    "11111111",
+    "22222222"
+  ],
+  "falhas": []
+}
