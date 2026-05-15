@@ -1,0 +1,42 @@
+O script implementa uma mala direta automatizada para envio de mensagens personalizadas via API do ClassApp. O fluxo principal é:
+
+1. Inicialização: Carrega o token de API do arquivo config.env. Se não existir, aborta.
+
+2. Leitura dos destinatários: Lê o arquivo alunos.csv com codificação UTF-8. Espera colunas:
+	id, nome_aluno, usuario_aluno, senha_aluno, nome_responsavel, usuario_responsavel, senha_responsavel
+Ignora linhas sem ID. Se nenhum registro for carregado, encerra.
+
+3. Carregamento do template: Abre template.docx, um documento Word com placeholders como {{nome_aluno}}. Usa a biblioteca mammoth para converter o DOCX em HTML, preservando formatação (negrito, itálico, quebras). Se o arquivo não existir, aborta.
+
+4. Envio individual: Para cada linha do CSV, na ordem em que aparece:
+	Substitui todos os placeholders no HTML pelos valores da respectiva linha do dicionário (ex.: {{nome_aluno}} vira "Aluno Exemplo A").
+	Monta o payload JSON conforme especificação da API ClassApp:
+		{"messageData": {"subject": "...", "content": "...", "type": "comunicado", "noReply": false, "recipients": {"eids": [ID]}}}
+	Envia uma requisição POST para https://api.classapp.com.br/v1/message com timeout de 30 segundos.
+	Tratamento de erros:
+		Se a resposta for 200/201, registra sucesso.
+		Se for 429 (rate limit), aguarda tempo exponencial (2, 4, 8 segundos) e tenta novamente até 3 vezes.
+		Se for 400 com indicação de HTML rejeitado, converte o conteúdo para texto puro (remove tags HTML) e reenvia.
+		Outros erros (401, 403, 500) ou exceções de rede/timeout também entram em retry, mas falhas persistentes são registradas como falha.
+	Após cada envio (sucesso ou falha final), aguarda 0.5 segundos para respeitar limites da API.
+
+5. Relatório final:
+	Gera um arquivo relatorio_envio.json com data, assunto, total de sucessos e falhas, e listas de IDs.
+	Se houver falhas, cria falhas.csv com os IDs e os respectivos erros.
+	Salva um log detalhado em logs/envio_YYYYMMDD_HHMMSS.log.
+
+6. Encerramento: Exibe resumo no console.
+
+Observações importantes:
+
+O script não envia mensagens em lote (vários IDs por requisição), pois a API testada aceita apenas um eid por chamada. Isso não significa que o script não consegue enviar mensagens para várias pessoas. Ele apenas faz isso de forma individualizada, que é como a própria plataforma funciona. Na prática, para enviar uma mensagem para 100 pessoas, o script fará 100 requisições separadas para a API, uma para cada ID.
+A formatação HTML é preservada sempre que possível; caso a API a rejeite, o fallback para texto puro garante a entrega do conteúdo.
+O fluxo é totalmente independente e pode ser executado via linha de comando, ideal para agendamento em cron ou systemd.
+
+
+
+
+
+
+
+
